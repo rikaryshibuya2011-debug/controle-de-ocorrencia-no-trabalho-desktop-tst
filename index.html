@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SST Gestão</title>
+    <meta name="description" content="Sistema de Gestão de Ocorrências no Trabalho - SST Gestão" />
+    <meta property="og:title" content="SST Gestão" />
+    <meta property="og:description" content="Sistema de Gestão de Ocorrências no Trabalho" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      /* Splash screen - ALL styles fully scoped to #splash, zero global resets */
+      #splash {
+        position: fixed;
+        inset: 0;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      }
+      #splash.splash-hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #splash .sp-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 0 24px 0;
+        padding: 0;
+        box-shadow: 0 0 40px rgba(245,158,11,0.4);
+        animation: sp-pulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      #splash .sp-logo svg {
+        width: 40px;
+        height: 40px;
+        display: block;
+      }
+      #splash .sp-title {
+        color: #f8fafc;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin: 0 0 6px 0;
+        padding: 0;
+        line-height: 1.2;
+      }
+      #splash .sp-sub {
+        color: #64748b;
+        font-size: 13px;
+        letter-spacing: 1px;
+        margin: 0 0 40px 0;
+        padding: 0;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+      #splash .sp-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(245,158,11,0.15);
+        border-top-color: #f59e0b;
+        border-radius: 50%;
+        animation: sp-spin 0.8s linear infinite;
+        flex-shrink: 0;
+      }
+      #splash .sp-status {
+        color: #475569;
+        font-size: 12px;
+        margin: 16px 0 0 0;
+        padding: 0;
+        letter-spacing: 0.3px;
+        line-height: 1;
+      }
+      @keyframes sp-spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes sp-pulse {
+        0%, 100% { box-shadow: 0 0 40px rgba(245,158,11,0.4); transform: scale(1); }
+        50%       { box-shadow: 0 0 60px rgba(245,158,11,0.6); transform: scale(1.05); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="splash">
+      <div class="sp-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+      <div class="sp-title">SST Gestão</div>
+      <div class="sp-sub">Sistema de Controle de Ocorrências</div>
+      <div class="sp-spinner"></div>
+      <div class="sp-status" id="sp-status">Iniciando aplicação...</div>
+    </div>
+
+    <div id="root"></div>
+
+    <script>
+      (function() {
+        var splash = document.getElementById('splash');
+        var statusEl = document.getElementById('sp-status');
+        var msgs = ['Iniciando aplicação...', 'Carregando módulos...', 'Conectando ao servidor...', 'Quase pronto...'];
+        var idx = 0;
+        var interval = setInterval(function() {
+          idx = (idx + 1) % msgs.length;
+          if (statusEl) statusEl.textContent = msgs[idx];
+        }, 1800);
+
+        // Remove splash as soon as React mounts into #root
+        var root = document.getElementById('root');
+        var observer = new MutationObserver(function() {
+          if (root && root.children.length > 0 && splash) {
+            clearInterval(interval);
+            splash.classList.add('splash-hide');
+            setTimeout(function() {
+              if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+            }, 550);
+            observer.disconnect();
+          }
+        });
+        observer.observe(root, { childList: true });
+      })();
+    </script>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

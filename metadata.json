@@ -1,0 +1,6 @@
+{
+  "name": "Sistema de Investigação de Acidentes e Incidentes SST",
+  "description": "Sistema completo para registro, investigação com 5 Porquês, monitoramento, indicadores estatísticos (TF/TG/Pirâmide de Bird), planos de ação 5W2H, relatórios em PDF/Excel e apresentação executiva gerencial.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
